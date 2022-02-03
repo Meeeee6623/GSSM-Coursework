@@ -27,12 +27,15 @@ for m in range(N):
     print()
 
     # back substitute
-    x = empty(N)
-    
+x = empty(N)
+for m in range(N-1, -1, -1):
+  x[m] = v[m] - sum(A[m, m+1:N] * x[m+1:N])
 
-    '''x = empty(N,float)
-      for m in range(N-1,-1,-1):
-        x[m] = v[m]
-        for i in range(m+1,N):
-        x [m] -= A [m, i] *X [i]
-        print(x) 
+print(x)
+
+'''x = empty(N,float)
+for m in range(N-1,-1,-1):
+x[m] = v[m]
+for i in range(m+1,N):
+x [m] -= A [m, i] *X [i]
+print(x)'''
