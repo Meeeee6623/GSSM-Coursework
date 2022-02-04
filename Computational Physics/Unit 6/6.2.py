@@ -1,5 +1,5 @@
 import numpy as np
-from numpy import array
+from numpy import array, sum
 
 
 def solve_gaussian(A: np.ndarray, v: np.ndarray):
@@ -22,7 +22,8 @@ def solve_gaussian(A: np.ndarray, v: np.ndarray):
                 ([[A[m, m:]]] * (N - m - 1))))  # subtract scaled matrix value from lower rows
 
     # back substitute
-    x = array([0] * N)
+    x = array([0] * N, float)
+    # x[N - 1:0:-1] = v[N - 1:0:-1] - sum(np.triu(A)[N - 1:0:-1, :] * x[N + 1:0:-1]) (does not work - calculations are done concurrently
     for m in range(N - 1, -1, -1):
         x[m] = v[m] - sum(A[m, m + 1:] * x[m + 1:])
     return x
