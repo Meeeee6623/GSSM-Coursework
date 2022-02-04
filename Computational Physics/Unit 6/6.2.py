@@ -3,9 +3,10 @@ from numpy import array, sum
 
 
 def solve_gaussian(A: np.ndarray, v: np.ndarray):
-    if len(v) != A.shape[0] or A.shape[0] != A.shape[1]: return Exception(
-        '''Array sizes incompatible. Make sure A is a square array, and the length of v matches that of A.''')
     N = len(v)
+    if len(v) != A.shape[0] or A.shape[0] != A.shape[1]:
+        return Exception(
+            '''Array sizes incompatible. Make sure A is a square array, and the length of v matches that of A.''')
 
     for m in range(N):
         max_ind = np.argmax(A[:, m])  # get index of max row for current column

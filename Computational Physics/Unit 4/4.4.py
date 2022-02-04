@@ -2,8 +2,7 @@ import math
 import time
 
 # pi integral evaluator, given N
-import numpy
-from numpy import linspace, sqrt, arange, power, float64
+from numpy import linspace, sqrt, arange, power, float64, sum
 
 
 def evaluate_pi(N):
@@ -31,22 +30,22 @@ check_estimate(estimate)
 that the program runs in about one second or less, how accurate a value can you
 get? '''
 
-# times = []
-# for i in range(1000000, 1000000000000, 500000):
-#     now = time.time()
-#     evaluate_half_pi(i)
-#     elapsed = time.time() - now
-#     if elapsed > 1:
-#         times.append(i)
-#         break
-#     if len(times) == 0:  # first time
-#         times.append(elapsed)
-#     else:
-#         times.append(elapsed)
-#         times.pop(0)
-#     print(elapsed)
-# print(times)
-# check_estimate(evaluate_half_pi(times[1]))
+times = []
+for i in range(1000000, 1000000000000, 5000000):
+    now = time.time()
+    evaluate_pi(i)
+    elapsed = time.time() - now
+    if elapsed > 1:
+        times.append(i)
+        break
+    if len(times) == 0:  # first time
+        times.append(elapsed)
+    else:
+        times.append(elapsed)
+        times.pop(0)
+    print(elapsed)
+print(times)
+check_estimate(evaluate_pi(times[1]))
 
 '''also compute pi using the Leibniz formula and the Bailey–Borwein–Plouffe formula.'''
 
