@@ -1,4 +1,4 @@
-from numpy import arange, sin, sqrt, power, fabs
+from numpy import arange, sin, sqrt, power, fabs, sum
 
 
 def f(x):
