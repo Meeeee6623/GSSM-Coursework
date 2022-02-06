@@ -1,3 +1,7 @@
+"""
+5.10-5.11.py
+Made by Benjamin Chauhan
+"""
 from numpy import sin, cos, fabs
 
 

@@ -1,3 +1,8 @@
+"""
+4.2.py
+Made by Benjamin Chauhan
+"""
+
 # 4.2: Quadratic Equations
 
 '''a) Write a program that takes as input the three numbers, a, b, and c, and prints out

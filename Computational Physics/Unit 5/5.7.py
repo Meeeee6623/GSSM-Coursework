@@ -1,3 +1,7 @@
+"""
+5.7.py
+Made by Benjamin Chauhan
+"""
 from numpy import arange, sin, sqrt, power, fabs, sum
 
 

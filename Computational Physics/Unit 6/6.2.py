@@ -1,3 +1,7 @@
+"""
+6.2.py
+Made by Benjamin Chauhan
+"""
 import numpy as np
 from numpy import array, sum
 

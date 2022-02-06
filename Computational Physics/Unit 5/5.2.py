@@ -1,3 +1,7 @@
+"""
+5.2.py
+Made by Benjamin Chauhan
+"""
 from math import fabs
 
 import matplotlib.pyplot as plt
