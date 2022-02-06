@@ -1,22 +1,21 @@
 import numpy as np
 
-tmp_data = []
+
+def calc_euclidian(data: np.ndarray):
+    s = np.average(np.sqrt(np.power(data[:40, :], 2)))
+    ve = np.average(np.sqrt(np.power(data[50:90, :], 2)))
+    vi = np.average(np.sqrt(np.power(data[100:140, :], 2)))
+    return s, ve, vi
+
+
+iris_data = np.empty([150, 4])
 
 # "sepal_length","sepal_width","petal_length","petal_width","class"
 with open('data.txt', 'r') as f:
-  for line in f.readlines()[1:]:
-    tmp = line.split(',')
-    for ind in range(len(tmp)):
-      if '\n' in tmp[ind]:
-        tmp[ind] = tmp[ind].replace('\n', '')
-      else:
-        tmp[ind] = float(tmp[ind])
-    tmp_data.append(tmp)
+    lines = f.readlines()[1:]
+    for index in np.arange(len(lines)):
+        iris_data[index] = lines[index].split(',')[:4]
 
-
-print(tmp_data[0][1:41][:4])
-iris_data = np.empty([120, 4])
-print(tmp_data[1:41][:3])
-
-iris_data[:40, :] = tmp_data[0][1:41][:4]
 print(iris_data)
+setosa, versicolor, virginica = calc_euclidian(iris_data)
+print(setosa, versicolor, virginica)
