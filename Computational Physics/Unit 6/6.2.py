@@ -1,5 +1,7 @@
 """
 6.2.py
+Solution to Exercise 6.2
+Solves systems of equations with Gaussian Elimination
 Made by Benjamin Chauhan
 """
 import numpy as np
