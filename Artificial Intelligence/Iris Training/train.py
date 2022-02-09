@@ -2,7 +2,9 @@ import numpy as np
 
 
 def test_training(distances: list, euclid_data: np.ndarray):
+    # grab all test values
     test_data = np.concatenate([euclid_data[40:50], euclid_data[90:100], euclid_data[140:]])
+    # get distances to each type, for each testing value
     setosa_dist = np.fabs(test_data - distances[0])
     versicolor_dist = np.fabs(test_data - distances[1])
     virginica_dist = np.fabs(test_data - distances[2])
@@ -23,7 +25,9 @@ def test_training(distances: list, euclid_data: np.ndarray):
 
 
 def calc_euclidian(data: np.ndarray):
+    # all values with euclidian mean
     euclid_data = np.sqrt(np.sum(np.power(data, 2), axis=1))
+    # mean per flower type
     s = np.mean(euclid_data[0:40])
     ve = np.mean(euclid_data[50:90])
     vi = np.mean(euclid_data[100:140])
