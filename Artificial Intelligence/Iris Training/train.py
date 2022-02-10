@@ -15,13 +15,21 @@ def test_training(distances: list, euclid_data: np.ndarray):
                                       virginica_dist[20:] < np.minimum(versicolor_dist[20:], setosa_dist[20:])])
 
     correct = np.count_nonzero(classifications)
-    wrongnum = len(test_data) - correct
-    wrongval = np.where(~classifications)[0]
+    wrong = len(test_data) - correct
+    wrong_indexes = np.where(~classifications)[0]
     # indexes of falsely classified values in original euclid_data array
-    wrongval = np.concatenate([np.where(wrongval < 10)[0] + 40,
-                               np.where((10 < wrongval) & (wrongval < 20))[0] + 80,
-                               np.where(20 < wrongval)[0] + 120])
-    return correct, wrongnum, wrongval
+    wrong_indexes = np.concatenate([np.where(wrong_indexes < 10)[0] + 40,
+                                    np.where((10 < wrong_indexes) & (wrong_indexes < 20))[0] + 80,
+                                    np.where(20 < wrong_indexes)[0] + 120])
+    print(f'{correct} Irises were correctly classified.')
+    print(f'{wrong} Irises were incorrectly classified:')
+    for i in wrong_indexes:
+        iris_types = ['setosa', 'versicolor', 'virginica']
+        nearest_dist = np.round(np.amin(np.fabs(euclid_data[i] - distances)), 3)
+        nearest_index = np.argmin(np.fabs(euclid_data[i] - distances)) - 1
+        print(
+            f'A {iris_types[i // 40 - 1]} was incorrectly classified as a {iris_types[nearest_index]} (distance of {nearest_dist})')
+    return correct, wrong, wrong_indexes
 
 
 def calc_euclidian(data: np.ndarray):
@@ -42,11 +50,4 @@ with open('data.txt', 'r') as f:
         iris_data[index] = lines[index].split(',')[:4]
 
 distances, euclid_data = calc_euclidian(iris_data)
-right, wrong, wrong_indexes = test_training(distances, euclid_data)
-print(f'{right} Irises were correctly classified.')
-print(f'{wrong} Irises were incorrectly classified:')
-for i in wrong_indexes:
-    iris_types = ['setosa', 'versicolor', 'virginica']
-    nearest_dist = np.round(np.amin(np.fabs(euclid_data[i] - distances)), 3)
-    nearest_index = np.argmin(np.fabs(euclid_data[i] - distances)) - 1
-    print(f'A {iris_types[i // 40 - 1]} was incorrectly classified as a {iris_types[nearest_index]} (distance of {nearest_dist})')
+test_training(distances, euclid_data)
