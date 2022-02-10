@@ -1,3 +1,5 @@
+'''Iris Classification with multiple distance metrics
+Author: Benjamin Chauhan'''
 import numpy as np
 
 
@@ -41,8 +43,8 @@ test_data = np.concatenate([iris_data[40:50], iris_data[90:100], iris_data[140:]
 
 # average values per class
 averages = np.array([np.mean(iris_data[0:40], axis=0),
-                    np.mean(iris_data[50:90], axis=0),
-                    np.mean(iris_data[100:140], axis=0)])
+                     np.mean(iris_data[50:90], axis=0),
+                     np.mean(iris_data[100:140], axis=0)])
 
 
 def calc_euclidian_distances(averages, test_data):
