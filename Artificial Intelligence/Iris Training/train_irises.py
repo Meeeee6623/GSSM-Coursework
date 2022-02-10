@@ -1,5 +1,5 @@
-'''Iris Classification with multiple distance metrics
-Author: Benjamin Chauhan'''
+"""Iris Classification with multiple distance metrics
+Author: Benjamin Chauhan"""
 import numpy as np
 
 
