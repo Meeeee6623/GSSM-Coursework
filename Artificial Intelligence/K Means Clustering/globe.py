@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from netCDF4 import Dataset
 
 
@@ -89,7 +90,7 @@ def mapping_map_to_sphere(lon, lat, radius=1):
 
 # Import topography data
 # Select the area you want
-resolution = 0.8
+resolution = .4
 lon_area = [-180., 180.]
 lat_area = [-90., 90.]
 # Get mesh-shape topography data
@@ -147,7 +148,7 @@ from plotly.offline import plot
 plot_data = [topo_sphere]
 fig = go.Figure(data=plot_data, layout=layout)
 plot(fig, validate=False, filename='SphericalTopography.html',
-     auto_open=True)
+     auto_open=False)
 
 ratio_topo = 1.0 + topo * 1e-5
 xs_3d = xs * ratio_topo
@@ -171,6 +172,82 @@ plot_data_3DST = [topo_sphere_3d]
 fig = go.Figure(data=plot_data_3DST, layout=layout)
 
 fig.update_layout(title_text='3D spherical topography map')
-os.chdir(outpath)
 plot(fig, validate=False, filename='3DSphericalTopography.html',
      auto_open=True)
+
+country_data = pd.read_csv('world_country_and_usa_states_latitude_and_longitude_values.csv')
+evlon = np.array(country_data['longitude'])
+evlat = np.array(country_data['latitude'])
+
+xs_ev_org, ys_ev_org, zs_ev_org = mapping_map_to_sphere(evlon, evlat)
+
+# Create color bar in Matplotlib
+import matplotlib
+
+
+def matplotlib_to_plotly(cmap, pl_entries):
+    h = 1.0 / (pl_entries - 1)
+    pl_colorscale = []
+
+    for k in range(pl_entries):
+        C = list(map(np.uint8, np.array(cmap(k * h)[:3]) * 255))
+        pl_colorscale.append([k * h, 'rgb' + str((C[0], C[1], C[2]))])
+
+    return pl_colorscale
+
+
+def MlibCscale_to_Plotly(cbar):
+    cmap = matplotlib.cm.get_cmap(cbar)
+    rgb = []
+    norm = matplotlib.colors.Normalize(vmin=0, vmax=255)
+
+    for i in range(0, 255):
+        k = matplotlib.colors.colorConverter.to_rgb(cmap(norm(i)))
+        rgb.append(k)
+
+    Cscale = matplotlib_to_plotly(cmap, 255)
+
+    return Cscale
+
+
+cbar = 'jet_r'
+Cscale_EQ = MlibCscale_to_Plotly(cbar)
+
+depmax = 700.
+depmin = 0.
+depbin = 50.
+
+cmin = depmin
+cmax = depmax
+cbin = depbin
+
+seis_3D_depth_up = go.Scatter3d(x=xs_ev_org,
+                                y=ys_ev_org,
+                                z=zs_ev_org,
+                                mode='markers',
+                                name='measured',
+                                marker=dict(
+                                    size=.25,
+                                    cmax=cmax,
+                                    cmin=cmin,
+                                    colorbar=dict(
+                                        title='Source Depth',
+                                        titleside='right',
+                                        titlefont=dict(size=16,
+                                                       color=titlecolor,
+                                                       family='Courier New'),
+                                        tickmode='array',
+                                        ticks='outside',
+                                        ticktext=list(np.arange(cmin, cmax + cbin, cbin)),
+                                        tickvals=list(np.arange(cmin, cmax + cbin, cbin)),
+                                        tickcolor=titlecolor,
+                                        tickfont=dict(size=14, color=titlecolor,
+                                                      family='Courier New')
+                                    ),
+                                    # choose color option
+                                    # choose color option
+                                    colorscale=Cscale_EQ,
+                                    showscale=True,
+                                    opacity=1.),
+                                hoverinfo='skip'
+                                )
