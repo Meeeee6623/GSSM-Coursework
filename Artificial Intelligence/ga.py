@@ -1,14 +1,14 @@
 from random import choice
-import matplotlib.pyplot as plt
+
 import numpy as np
 
 
 def fitness(pop):
-    return np.sqrt((pop[:, 0] - 0.5) ** 2 + (pop[:, 1] - 0.5) ** 2)
+    return np.abs(pop - np.asarray([0, 1, 0, 1, 0]))
 
 
 def generate_population(n):
-    return np.random.rand(n, 2)
+    return np.random.random(n) > 0.5
 
 
 def next_gen(pop, elite):
@@ -28,22 +28,16 @@ def next_gen(pop, elite):
 
 
 def mutate(p):
-    r = np.random.random()
-    if r < .25:
-        return p[0] + r / 50, p[1]
-    elif r < .5:
-        return p[0] - r / 50, p[1]
-    elif r < .75:
-        return p[0], p[1] + r / 50
+    r = np.random.randint(0, p.size)
+    if p[r] == 0:
+        p[r] = 1
     else:
-        return p[0], p[1] - r / 50
+        p[r] = 0
+    return p
 
 
 def crossover(p1, p2):
-    if np.random.random() > .5:
-        return p1[0], p2[1]
-    else:
-        return p2[0], p1[1]
+    return np.concatenate(p1[0:p1.size // 2], p2[p1.size // 2:])
 
 
 population = generate_population(100)
@@ -54,12 +48,3 @@ for i in range(100):
     population = next_gen(population, top_3)
     scores = fitness(population)
     top_3 = population[np.argpartition(scores, 3)]
-    plt.scatter(population[:, 0], population[:, 1])
-    plt.xlim([0, 1])
-    plt.ylim([0, 1])
-    plt.xticks(np.linspace(0, 1, 11))
-    plt.yticks(np.linspace(0, 1, 11))
-    plt.grid()
-    plt.savefig(rf'images\gen_{i}.png')
-    plt.show()
-
